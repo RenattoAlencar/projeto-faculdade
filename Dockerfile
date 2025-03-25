@@ -2,7 +2,7 @@ FROM openjdk:17-jdk
 
 WORKDIR /app
 
-COPY target/devops-0.0.1-SNAPSHOT.jar /app/devops.jar
+COPY target/*.jar /app/devops.jar
 
 ENV PORT=8080
 
