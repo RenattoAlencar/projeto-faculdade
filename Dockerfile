@@ -1,4 +1,4 @@
-FROM openjdk:23-jdk
+FROM openjdk:17-jdk
 
 WORKDIR /app
 
@@ -8,4 +8,4 @@ ENV PORT=8080
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "devops.jar"]
+ENTRYPOINT ["java", "-jar", "/app/devops.jar"]
