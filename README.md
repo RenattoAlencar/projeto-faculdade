@@ -38,7 +38,7 @@ Antes de começar, certifique-se de ter instalado::
 
 ### 1. Clonar o Repositório
 ```bash
-git clone https://github.com/your-username/devops-project.git
+git clone https://github.com/RenattoAlencar/projeto-faculdade.git
 cd devops-project
 ```
 ### 2. Construir a Aplicação
