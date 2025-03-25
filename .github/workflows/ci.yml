@@ -13,24 +13,41 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up JDK 23
+      - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
-          java-version: '23'
+          java-version: '17'
           distribution: 'temurin'
 
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            maven-${{ runner.os }}-
+
       - name: Build with Maven
-        run: mvn clean install --no-transfer-progress
+        run: mvn clean package --no-transfer-progress
 
-      - name: Increment Version in pom.xml
-        run: |
-          # Increment the version using a simple command. Adjust this to your needs.
-          mvn versions:set -DnewVersion=1.0.$(date +%s) -DgenerateBackupPoms=false
-          mvn versions:commit      
-
-      - name: Build Docker Image
-        run: |
-          docker build -t devops-app .      
+      - name: List generated files (Debugging)
+        run: ls -la target/
 
       - name: Run tests
         run: mvn test
+
+      - name: Increment Version in pom.xml
+        run: |
+          CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          MAJOR=$(echo $CURRENT_VERSION | cut -d. -f1)
+          MINOR=$(echo $CURRENT_VERSION | cut -d. -f2)
+          PATCH=$(echo $CURRENT_VERSION | cut -d. -f3)
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+          echo "Incrementing version: $CURRENT_VERSION -> $NEW_VERSION"
+          mvn versions:set -DnewVersion=$NEW_VERSION -DgenerateBackupPoms=false
+          mvn versions:commit
+
+      - name: Build Docker Image
+        run: |
+          docker build -t devops-app .
