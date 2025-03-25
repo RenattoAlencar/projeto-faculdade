@@ -54,7 +54,7 @@ docker build -t devops-app:latest .
 docker run -d -p 8080:8080 --name devops-container devops-app
 ```
  - **A aplicação estará disponível em:**
-  [click here](http://localhost:8383/register/api/v1/search/)
+  [click here](http://localhost:8080/register/api/v1/search)
 
 ## GitHub Actions
 
