@@ -1,3 +1,10 @@
+name: CI Pipeline for DevOps Project
+
+on:
+  pull_request:
+    branches:
+      - develop
+
 jobs:
   build:
     runs-on: ubuntu-latest
