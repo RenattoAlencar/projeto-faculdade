@@ -39,17 +39,32 @@ Antes de começar, certifique-se de ter instalado::
 ### 1. Clonar o Repositório
 ```bash
 git clone https://github.com/RenattoAlencar/projeto-faculdade.git
-cd devops-project
+cd projeto-faculdade
 ```
 ### 2. Construir a Aplicação
 ```bash
+git switch feature/devops-pipeline
+```
+### 3. Construir a Aplicação
+```bash
 mvn clean package
 ```
-### 3. Criar a Imagem Docker
+### 4. Processo de build.
+A alterar a versão do pom.
+
+### 5. Mande a alteração para a stage (Cuuidado com as alterações, estou usando o git add (.), para enviar tudo).
+```bash
+git add .
+```
+### 6. Commit essa alteração
+```bash
+git commit -m "build:(increment version pom)"
+```
+### 4. Criar a Imagem Docker
 ```bash
 docker build -t devops-app:latest .
 ```
-### 4. Executar o Contêiner
+### 5. Executar o Contêiner
 ```bash
 docker run -d -p 8080:8080 --name devops-container devops-app
 ```
@@ -62,8 +77,6 @@ Este repositório contém uma configuração do GitHub Actions para:
     
    - **Build**: Construir o projeto com Maven.
    
-   - **Versionamento**: Incrementar a versão do arquivo pom.xml.
-
    - **Docker**: Criar a imagem Docker.
 
    - **Testes**: Executar os testes automatizados.
