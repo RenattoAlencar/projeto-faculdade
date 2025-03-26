@@ -6,7 +6,7 @@ on:
       - develop
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -22,13 +22,17 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build with Maven (without version change)
+      - name: Run tests
+        run: mvn test
+
+      - name: Build with Maven
         run: mvn clean install --no-transfer-progress
 
       - name: List files in target directory
         run: ls -la target/
 
       - name: Build Docker Image
+
         run: docker build --no-cache -t devops-app .
 
       - name: Commit and Push Updated pom.xml (if any changes)
@@ -48,3 +52,6 @@ jobs:
 
       - name: Run tests
         run: mvn test
+
+        run: docker build --no-cache -t devops-app .
+
