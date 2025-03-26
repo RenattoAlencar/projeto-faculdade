@@ -6,7 +6,7 @@ on:
       - develop
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -22,6 +22,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Run tests
+        run: mvn test
+
       - name: Build with Maven
         run: mvn clean install --no-transfer-progress
 
@@ -30,25 +33,3 @@ jobs:
 
       - name: Build Docker Image
         run: docker build --no-cache -t devops-app .
-
-      - name: Increment Version in pom.xml
-        run: |
-          mvn versions:set -DnewVersion=1.0.$(date +%s) -DgenerateBackupPoms=false
-          mvn versions:commit
-
-      - name: Commit and Push Updated pom.xml
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          git checkout develop
-          git fetch origin develop
-          git reset --soft origin/develop
-
-          git add pom.xml
-          git commit -m "chore: bump version in pom.xml" || echo "No changes to commit"
-
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:develop || exit 1
-
-      - name: Run tests
-        run: mvn test
