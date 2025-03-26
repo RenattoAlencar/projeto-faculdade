@@ -22,7 +22,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build with Maven (without version change)
+      - name: Build with Maven
         run: mvn clean install --no-transfer-progress
 
       - name: List files in target directory
@@ -33,7 +33,6 @@ jobs:
 
       - name: Increment Version in pom.xml
         run: |
-          
           mvn versions:set -DnewVersion=1.0.$(date +%s) -DgenerateBackupPoms=false
           mvn versions:commit
 
@@ -41,12 +40,15 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout develop
+          git fetch origin develop
+          git reset --soft origin/develop
+
           git add pom.xml
           git commit -m "chore: bump version in pom.xml" || echo "No changes to commit"
-          git config pull.rebase false
-          git pull --no-edit origin develop
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:develop
-        continue-on-error: true
+
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:develop || exit 1
 
       - name: Run tests
         run: mvn test
