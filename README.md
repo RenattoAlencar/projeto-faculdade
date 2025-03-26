@@ -60,11 +60,41 @@ git add .
 ```bash
 git commit -m "build:(increment version pom)"
 ```
-### 4. Criar a Imagem Docker
+### 7. Commit essa alteração
+```bash
+git commit -m "build:(increment version pom)"
+```
+### 8. Atualizar repositorio remoto
+```bash
+git push
+```
+### 9 - O fluxo de trabalho é acionado sempre que um pull request é aberto para a branch develop.
+Como visualizar os logs do GitHub Actions
+
+  - **1**: Vá para a aba Actions do repositório no GitHub.
+
+  - **2**: Realize um pull request da brach: feature/devops-pipeline para a branch: develop.
+
+  - **3**:  Selecione o fluxo de trabalho relacionado ao seu pull request.
+
+  - **4**:  Visualize os logs de execução para ver como o pipeline foi executado.
+    
+  - **5**:  Aprove o merge.
+
+### 10. Voltar para a branch develop
+```bash
+git switch develop
+```
+### 10. Atuualizar com as mudanças realizadas
+```bash
+git pull
+```
+
+### 11. Criar a Imagem Docker
 ```bash
 docker build -t devops-app:latest .
 ```
-### 5. Executar o Contêiner
+### 12. Executar o Contêiner
 ```bash
 docker run -d -p 8080:8080 --name devops-container devops-app
 ```
@@ -80,15 +110,6 @@ Este repositório contém uma configuração do GitHub Actions para:
    - **Docker**: Criar a imagem Docker.
 
    - **Testes**: Executar os testes automatizados.
-
-### O fluxo de trabalho é acionado sempre que um pull request é aberto para a branch develop.
-Como visualizar os logs do GitHub Actions
-
-  - **1**: Vá para a aba Actions do repositório no GitHub.
-
-  - **2**:  Selecione o fluxo de trabalho relacionado ao seu pull request.
-
-  - **3**:  Visualize os logs de execução para ver como o pipeline foi executado.
 
 
  
