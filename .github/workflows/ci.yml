@@ -40,9 +40,7 @@ jobs:
           git add pom.xml
           git commit -m "chore: update pom.xml" || echo "No changes to commit"
           
-          git config pull.rebase false
-          
-          git pull origin develop --allow-unrelated-histories --no-edit || { echo "Git pull failed: Merge conflict detected"; exit 1; }
+          git config pull.rebase false                   
           
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:develop || { echo "Git push failed"; exit 1; }
 
