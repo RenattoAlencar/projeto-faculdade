@@ -5,6 +5,9 @@ on:
     branches:
       - develop
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,9 +33,18 @@ jobs:
 
       - name: Increment Version in pom.xml
         run: |
-          # Increment the version using a simple command
+          
           mvn versions:set -DnewVersion=1.0.$(date +%s) -DgenerateBackupPoms=false
           mvn versions:commit      
+
+      - name: Commit and Push Updated pom.xml
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add pom.xml
+          git commit -m "chore: bump version in pom.xml"
+          git push origin develop
+        continue-on-error: true
 
       - name: Run tests
         run: mvn test
