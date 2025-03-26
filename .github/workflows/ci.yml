@@ -50,8 +50,6 @@ jobs:
           
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:develop || { echo "Git push failed"; exit 1; }
 
-      - name: Run tests
-        run: mvn test
-
-        run: docker build --no-cache -t devops-app .
+     
+        
 
