@@ -100,6 +100,7 @@ docker run -d -p 8080:8080 --name devops-container devops-app
 ```
  - **A aplicação estará disponível em:**
   [click here](http://localhost:8080/register/api/v1/search)
+OBS: Alguns navegadores precisará carregar aperte [ENTER] ou F5 na URL
 
 ## GitHub Actions
 
