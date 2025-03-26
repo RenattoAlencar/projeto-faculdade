@@ -32,4 +32,26 @@ jobs:
         run: ls -la target/
 
       - name: Build Docker Image
+
         run: docker build --no-cache -t devops-app .
+
+      - name: Commit and Push Updated pom.xml (if any changes)
+        run: |
+          
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git pull --rebase origin develop || { echo "Git pull failed"; exit 1; }
+          
+          git add pom.xml
+          git commit -m "chore: update pom.xml" || echo "No changes to commit"
+          
+          git config pull.rebase false     
+          
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:develop || { echo "Git push failed"; exit 1; }
+
+      - name: Run tests
+        run: mvn test
+
+        run: docker build --no-cache -t devops-app .
+
