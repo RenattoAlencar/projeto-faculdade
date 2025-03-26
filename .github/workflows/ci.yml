@@ -31,13 +31,7 @@ jobs:
       - name: Build Docker Image
         run: docker build --no-cache -t devops-app .
 
-      - name: Increment Version in pom.xml
-        run: |
-          
-          mvn versions:set -DnewVersion=1.0.$(date +%s) -DgenerateBackupPoms=false
-          mvn versions:commit
-
-      - name: Commit and Push Updated pom.xml
+      - name: Commit and Push Updated pom.xml (if any changes)
         run: |
           
           git config --global user.name "github-actions[bot]"
@@ -45,9 +39,9 @@ jobs:
 
           
           git add pom.xml
-          git commit -m "chore: bump version in pom.xml" || { echo "No changes to commit"; exit 1; }
+          git commit -m "chore: update pom.xml" || { echo "No changes to commit"; exit 1; }
 
-          
+         
           git config pull.rebase false
 
           
